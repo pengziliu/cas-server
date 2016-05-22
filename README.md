@@ -33,8 +33,8 @@ git init
 
 ## Embedded Tomcat
 
-- Create a keystore file `thekeystore` under `/etc/cas`. Use the password `changeit` for both the keystore and the key/certificate entries. 
-- Ensure the keystore is loaded up with keys and certificates of the server. 
+- Create a keystore file `thekeystore` under `/etc/cas`. Use the password `changeit` for both the keystore and the key/certificate entries.
+- Ensure the keystore is loaded up with keys and certificates of the server.
 
 Then, run:
 
