@@ -15,14 +15,6 @@ Generic CAS WAR overlay to exercise the latest versions of CAS. This overlay cou
 
 The `etc` directory contains the configuration files and directories that need to be copied to `/etc/cas`.
 
-Note that the `config` directory is expected to turn into a local `git` repository. 
-To do so, execute the following commands:
-
-```bash
-cd /etc/cas/config
-git init
-```
-
 # Build
 
 ```bash
