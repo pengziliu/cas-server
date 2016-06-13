@@ -1,7 +1,7 @@
 CAS Overlay Template
 ============================
 
-Generic CAS WAR overlay to exercise the latest versions of CAS. This overlay could be freely used as a starting template for local CAS war overlays. The CAS services management overlay is available [here](https://github.com/Jasig/cas-services-management-overlay).
+Generic CAS WAR overlay to exercise the latest versions of CAS. This overlay could be freely used as a starting template for local CAS war overlays. The CAS services management overlay is available [here](https://github.com/apereo/cas-services-management-overlay).
 
 # Versions
 ```xml

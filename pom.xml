@@ -14,6 +14,10 @@
                 <groupId>com.rimerosolutions.maven.plugins</groupId>
           		<artifactId>wrapper-maven-plugin</artifactId>
           		<version>0.0.4</version>
+          		<configuration>
+          			<verifyDownload>true</verifyDownload>
+	    			<checksumAlgorithm>MD5</checksumAlgorithm>
+				</configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -55,7 +59,7 @@
     </dependencies>
 
     <properties>
-        <cas.version>5.0.0.M2-SNAPSHOT</cas.version>
+        <cas.version>5.0.0.M2</cas.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -71,4 +75,36 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
     </repositories>
+
+    <profiles>
+		<profile>
+		    <activation>
+		        <activeByDefault>true</activeByDefault>
+		    </activation>
+		    <id>pgp</id>
+		    <build>
+		        <plugins>
+		            <plugin>
+		                <groupId>com.github.s4u.plugins</groupId>
+		                <artifactId>pgpverify-maven-plugin</artifactId>
+		                <version>1.1.0</version>
+		                <executions>
+		                    <execution>
+		                        <goals>
+		                            <goal>check</goal>
+		                        </goals>
+		                    </execution>
+		                </executions>
+		                <configuration>
+		                    <pgpKeyServer>hkp://pool.sks-keyservers.net</pgpKeyServer>
+		                    <pgpKeysCachePath>${settings.localRepository}/pgpkeys-cache</pgpKeysCachePath>
+		                    <scope>test</scope>
+		                    <verifyPomFiles>true</verifyPomFiles>
+		                    <failNoSignature>false</failNoSignature>
+		                </configuration>
+		            </plugin>
+		        </plugins>
+		    </build>
+		</profile>
+    </profiles>
 </project>
