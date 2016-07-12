@@ -44,7 +44,7 @@ CAS will be available at:
 To configure remote debugging for the embedded Tomcat instance, execute:
 
 ```bash
-mvn clean package && java -Xdebug -Xrunjdwp:transport=dt_socket,address=5000,server=y,suspend=n -jar target/cas.war 
+./mvnw[.bat] clean package && java -Xdebug -Xrunjdwp:transport=dt_socket,address=5000,server=y,suspend=n -jar target/cas.war 
 ```
 
 ## External
