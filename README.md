@@ -47,5 +47,14 @@ CAS will be available at:
 * `http://cas.server.name:8080/cas`
 * `https://cas.server.name:8443/cas`
 
+### Remote Debugging
+
+To configure remote debugging for the embedded Tomcat instance, execute:
+
+```bash
+mvn clean package && java -Xdebug -Xrunjdwp:transport=dt_socket,address=5000,server=y,suspend=n -jar target/cas.war 
+```
+
 ## External
 Deploy resultant `target/cas.war`  to a servlet container of choice.
+

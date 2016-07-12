@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd ">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.jasig.cas</groupId>
+    <groupId>org.apereo.cas</groupId>
     <artifactId>cas-overlay</artifactId>
     <packaging>war</packaging>
     <version>1.0</version>
@@ -25,11 +25,11 @@
 			        <recompressZippedFiles>false</recompressZippedFiles>
 			        <archive>
 			        	<compress>false</compress>
-						<manifestFile>${project.build.directory}/war/work/org.jasig.cas/cas-server-webapp/META-INF/MANIFEST.MF</manifestFile> 
+						<manifestFile>${project.build.directory}/war/work/org.apereo.cas/cas-server-webapp/META-INF/MANIFEST.MF</manifestFile> 
 					</archive>
                     <overlays>
                         <overlay>
-                            <groupId>org.jasig.cas</groupId>
+                            <groupId>org.apereo.cas</groupId>
                             <artifactId>cas-server-webapp</artifactId>
                         </overlay>
                     </overlays>
@@ -46,7 +46,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.jasig.cas</groupId>
+            <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-webapp</artifactId>
             <version>${cas.version}</version>
             <type>war</type>
@@ -55,7 +55,7 @@
     </dependencies>
 
     <properties>
-        <cas.version>5.0.0-SNAPSHOT</cas.version>
+        <cas.version>5.0.0.M3-SNAPSHOT</cas.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -65,10 +65,22 @@
         <repository>
             <id>sonatype-releases</id>
             <url>http://oss.sonatype.org/content/repositories/releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </repository>
         <repository>
             <id>sonatype-snapshots</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </repository>
     </repositories>
 </project>
