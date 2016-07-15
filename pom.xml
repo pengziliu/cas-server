@@ -109,6 +109,10 @@
                 <enabled>false</enabled>
             </releases>
         </repository>
+        <repository>
+            <id>shibboleth-releases</id>
+            <url>https://build.shibboleth.net/nexus/content/repositories/releases</url>
+        </repository>
     </repositories>
 
     <profiles>
