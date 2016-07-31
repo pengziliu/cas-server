@@ -22,10 +22,6 @@ function install() {
 	./mvnw clean package install -T 5
 }
 
-function clean() {
-	./mvnw clean
-}
-
 function run() {
 	install && java -Xdebug -Xrunjdwp:transport=dt_socket,address=5000,server=y,suspend=n -jar target/cas.war 
 }
