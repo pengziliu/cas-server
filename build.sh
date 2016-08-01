@@ -4,7 +4,7 @@ echo -e "Creating configuration directory under /etc/cas"
 mkdir -p /etc/cas/config
 
 echo -e "Copying configuration files"
-cp -rfv etc/cas /etc/cas
+cp -rfv etc/cas/* /etc/cas
 
 function help() {
 	echo "Usage: build.sh [clean|package|install|run]"	
