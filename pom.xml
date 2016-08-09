@@ -122,7 +122,7 @@
     <profiles>
 		<profile>
 		    <activation>
-		        <activeByDefault>true</activeByDefault>
+		        <activeByDefault>false</activeByDefault>
 		    </activation>
 		    <id>pgp</id>
 		    <build>
