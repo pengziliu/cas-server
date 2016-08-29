@@ -17,7 +17,7 @@
           		<configuration>
           			<verifyDownload>true</verifyDownload>
 	    			<checksumAlgorithm>MD5</checksumAlgorithm>
-				</configuration>
+			</configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -81,7 +81,7 @@
     </dependencies>
 
     <properties>
-        <cas.version>5.0.0.RC1-SNAPSHOT</cas.version>
+        <cas.version>5.0.0.RC2-SNAPSHOT</cas.version>
         <maven-jetty-plugin.version>9.3.6.v20151106</maven-jetty-plugin.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
