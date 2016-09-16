@@ -18,6 +18,14 @@ The `etc` directory contains the configuration files and directories that need t
 
 # Build
 
+To see what commands are available to the build script, run:
+
+```bash
+./build.sh help
+```
+
+To package the final web application, run:
+
 ```bash
 ./build.sh package
 ```
