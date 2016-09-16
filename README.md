@@ -21,6 +21,12 @@ The `etc` directory contains the configuration files and directories that need t
 ./build.sh package
 ```
 
+To update `SNAPSHOT` versions run:
+
+```bash
+./build.sh package -U
+```
+
 # Deployment
 
 ## Embedded Tomcat
