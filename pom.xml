@@ -81,7 +81,7 @@
     </dependencies>
 
     <properties>
-        <cas.version>5.0.0.RC2-SNAPSHOT</cas.version>
+        <cas.version>5.0.0.RC3-SNAPSHOT</cas.version>
         <maven-jetty-plugin.version>9.3.6.v20151106</maven-jetty-plugin.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
