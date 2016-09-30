@@ -38,21 +38,29 @@ To update `SNAPSHOT` versions run:
 
 # Deployment
 
-## Embedded Tomcat
-
 - Create a keystore file `thekeystore` under `/etc/cas`. Use the password `changeit` for both the keystore and the key/certificate entries.
 - Ensure the keystore is loaded up with keys and certificates of the server.
 
-Then, run:
+On a successful deployment via the following methods, CAS will be available at:
+
+* `http://cas.server.name:8080/cas`
+* `https://cas.server.name:8443/cas`
+
+## Executable WAR
+
+Run the CAS web application as an executable WAR.
 
 ```bash
 ./build.sh run
 ```
 
-CAS will be available at:
+## Spring Boot
 
-* `http://cas.server.name:8080/cas`
-* `https://cas.server.name:8443/cas`
+Run the CAS web application as an executable WAR via Spring Boot. This is most useful during development and testing.
+
+```bash
+./build.sh bootrun
+```
 
 ## External
 

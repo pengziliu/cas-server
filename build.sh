@@ -10,7 +10,7 @@ function copy() {
 }
 
 function help() {
-	echo "Usage: build.sh [copy|clean|package|run]"	
+	echo "Usage: build.sh [copy|clean|package|run|bootrun]"	
 }
 
 function clean() {
@@ -22,6 +22,9 @@ function package() {
 	copy
 }
 
+function bootrun() {
+	./mvnw clean package spring-boot:run -T 5 "$@"
+}
 
 function run() {
 	package && java -Xdebug -Xrunjdwp:transport=dt_socket,address=5000,server=y,suspend=n -jar target/cas.war 
@@ -45,6 +48,10 @@ case "$1" in
 "package")
 	shift
     package "$@"
+    ;;
+"bootrun")
+	shift
+    bootrun "$@"
     ;;
 "run")
     run "$@"

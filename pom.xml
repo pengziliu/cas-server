@@ -12,12 +12,21 @@
         <plugins>
             <plugin>
                 <groupId>com.rimerosolutions.maven.plugins</groupId>
-          		<artifactId>wrapper-maven-plugin</artifactId>
-          		<version>0.0.4</version>
-          		<configuration>
-          			<verifyDownload>true</verifyDownload>
-	    			<checksumAlgorithm>MD5</checksumAlgorithm>
-			</configuration>
+                <artifactId>wrapper-maven-plugin</artifactId>
+                <version>0.0.4</version>
+                <configuration>
+                    <verifyDownload>true</verifyDownload>
+                    <checksumAlgorithm>MD5</checksumAlgorithm>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${springboot.version}</version>
+                <configuration>
+                    <mainClass>org.springframework.boot.loader.WarLauncher</mainClass>
+                    <addResources>true</addResources>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -25,12 +34,13 @@
                 <version>2.6</version>
                 <configuration>
                     <warName>cas</warName>
-			        <failOnMissingWebXml>false</failOnMissingWebXml>
-			        <recompressZippedFiles>false</recompressZippedFiles>
-			        <archive>
-			        	<compress>false</compress>
-						<manifestFile>${project.build.directory}/war/work/org.apereo.cas/cas-server-webapp/META-INF/MANIFEST.MF</manifestFile> 
-					</archive>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <recompressZippedFiles>false</recompressZippedFiles>
+                    <archive>
+                        <compress>false</compress>
+                        <manifestFile>${project.build.directory}/war/work/org.apereo.cas/cas-server-webapp/META-INF/MANIFEST.MF
+                        </manifestFile>
+                    </archive>
                     <overlays>
                         <overlay>
                             <groupId>org.apereo.cas</groupId>
@@ -43,28 +53,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
-            </plugin>
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>${maven-jetty-plugin.version}</version>
-                <configuration>
-                    <jettyXml>${basedir}/etc/jetty/jetty.xml,${basedir}/etc/jetty/jetty-ssl.xml,${basedir}/etc/jetty/jetty-https.xml</jettyXml>
-                    <systemProperties>
-                        <systemProperty>
-                            <name>org.eclipse.jetty.annotations.maxWait</name>
-                            <value>240</value>
-                        </systemProperty>
-                    </systemProperties>
-                    <webApp>
-                        <contextPath>/cas</contextPath>
-                        <overrideDescriptor>${basedir}/etc/jetty/web.xml</overrideDescriptor>
-                    </webApp>
-                    <webAppConfig>
-                        <allowDuplicateFragmentNames>true</allowDuplicateFragmentNames>
-                    </webAppConfig>
-                    <jvmArgs>-Dlogging.config=/etc/cas/log4j2.xml -Xdebug -Xrunjdwp:transport=dt_socket,address=5000,server=y,suspend=n</jvmArgs>
-                </configuration>
             </plugin>
         </plugins>
         <finalName>cas</finalName>
@@ -82,7 +70,7 @@
 
     <properties>
         <cas.version>5.0.0.RC3-SNAPSHOT</cas.version>
-        <maven-jetty-plugin.version>9.3.6.v20151106</maven-jetty-plugin.version>
+        <springboot.version>1.4.1.RELEASE</springboot.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -120,34 +108,34 @@
     </repositories>
 
     <profiles>
-		<profile>
-		    <activation>
-		        <activeByDefault>false</activeByDefault>
-		    </activation>
-		    <id>pgp</id>
-		    <build>
-		        <plugins>
-		            <plugin>
-		                <groupId>com.github.s4u.plugins</groupId>
-		                <artifactId>pgpverify-maven-plugin</artifactId>
-		                <version>1.1.0</version>
-		                <executions>
-		                    <execution>
-		                        <goals>
-		                            <goal>check</goal>
-		                        </goals>
-		                    </execution>
-		                </executions>
-		                <configuration>
-		                    <pgpKeyServer>hkp://pool.sks-keyservers.net</pgpKeyServer>
-		                    <pgpKeysCachePath>${settings.localRepository}/pgpkeys-cache</pgpKeysCachePath>
-		                    <scope>test</scope>
-		                    <verifyPomFiles>true</verifyPomFiles>
-		                    <failNoSignature>false</failNoSignature>
-		                </configuration>
-		            </plugin>
-		        </plugins>
-		    </build>
-		</profile>
+        <profile>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <id>pgp</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.s4u.plugins</groupId>
+                        <artifactId>pgpverify-maven-plugin</artifactId>
+                        <version>1.1.0</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <pgpKeyServer>hkp://pool.sks-keyservers.net</pgpKeyServer>
+                            <pgpKeysCachePath>${settings.localRepository}/pgpkeys-cache</pgpKeysCachePath>
+                            <scope>test</scope>
+                            <verifyPomFiles>true</verifyPomFiles>
+                            <failNoSignature>false</failNoSignature>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 </project>
