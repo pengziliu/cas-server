@@ -10,7 +10,7 @@ function copy() {
 }
 
 function help() {
-	echo "Usage: build.sh [copy|clean|package|run|bootrun]"	
+	echo "Usage: build.sh [copy|clean|package|run|debug|bootrun]"	
 }
 
 function clean() {
@@ -26,8 +26,12 @@ function bootrun() {
 	./mvnw clean package spring-boot:run -T 5 "$@"
 }
 
-function run() {
+function debug() {
 	package && java -Xdebug -Xrunjdwp:transport=dt_socket,address=5000,server=y,suspend=n -jar target/cas.war 
+}
+
+function run() {
+	package && java -jar target/cas.war 
 }
 
 if [ $# -eq 0 ]; then
@@ -52,6 +56,9 @@ case "$1" in
 "bootrun")
 	shift
     bootrun "$@"
+    ;;
+"debug")
+    debug "$@"
     ;;
 "run")
     run "$@"
