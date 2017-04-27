@@ -50,5 +50,5 @@
 @goto:eof
 
 :run
-    call:package %1 %2 %3 & java -jar target/cas.war 
+    call:package %1 %2 %3 & java -jar target/cas.war
 @goto:eof
