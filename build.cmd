@@ -46,7 +46,7 @@
 @goto:eof
 
 :debug
-    call:package %1 %2 %3 & java -Xdebug -Xrunjdwp:transport=dt_socket,address=5000,server=y,suspend=n -jar target/cas.war 
+    call:package %1 %2 %3 & java -Xdebug -Xrunjdwp:transport=dt_socket,address=5000,server=y,suspend=n -jar target/cas.war
 @goto:eof
 
 :run
