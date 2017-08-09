@@ -6,7 +6,7 @@ Generic CAS WAR overlay to exercise the latest versions of CAS. This overlay cou
 # Versions
 
 ```xml
-<cas.version>5.1.x</cas.version>
+<cas.version>5.2.0-RC2</cas.version>
 ```
 
 # Requirements
