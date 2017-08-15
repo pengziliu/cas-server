@@ -18,6 +18,7 @@ function help() {
 	echo "	debug: Run CAS.war and listen for Java debugger on port 5000"
 	echo "	bootrun: Run with maven spring boot plugin, doesn't work with multiple dependencies"
 	echo "	gencert: Create keystore with SSL certificate in location where CAS looks by default"
+        echo "	command: Run the CAS command line shell and pass commands"
 }
 
 function clean() {
@@ -58,6 +59,10 @@ function gencert() {
 	keytool -exportcert -alias cas -storepass changeit -keystore /etc/cas/thekeystore -file /etc/cas/cas.cer
 }
 
+function command() {
+	package && java -jar target/cas/WEB-INF/lib/cas-server-support-shell-*.jar "$@"
+}
+
 if [ $# -eq 0 ]; then
     echo -e "No commands provided. Defaulting to [run]\n"
     run
@@ -89,6 +94,10 @@ case "$1" in
     ;;
 "gencert")
     gencert "$@"
+    ;;
+"command")
+    shift
+    command "$@"
     ;;
 *)
     help
