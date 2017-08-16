@@ -60,7 +60,13 @@ function gencert() {
 }
 
 function command() {
-	package && java -jar target/cas/WEB-INF/lib/cas-server-support-shell-*.jar "$@"
+        CAS_VERSION=$(./mvnw -q -Dexec.executable="echo" -Dexec.args='${cas.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec 2>/dev/null)
+        COMMAND_FILE="./target/cas-server-support-shell-${CAS_VERSION}.jar"
+        if [ ! -f "$COMMAND_FILE" ]; then
+            package
+            wget -q http://repo1.maven.org/maven2/org/apereo/cas/cas-server-support-shell/${CAS_VERSION}/cas-server-support-shell-${CAS_VERSION}.jar -P ./target
+        fi
+        java -jar target/cas-server-support-shell-${CAS_VERSION}.jar "$@"
 }
 
 if [ $# -eq 0 ]; then
