@@ -70,9 +70,9 @@ Be careful with this method of deployment. `bootRun` is not designed to work wit
 
 ## Spring Boot App Server Selection
 
-There is an app.server property in the pom.xml that can be used to select a spring boot application server.
-It defaults to "-tomcat" but "-jetty" and "-undertow" are supported. 
-It can also be set to an empty value (nothing) if you want to deploy CAS to an external application server of your choice and you don't want the spring boot libraries included. 
+There is an app.server property in the `pom.xml` that can be used to select a spring boot application server.
+It defaults to `-tomcat` but `-jetty` and `-undertow` are supported. 
+It can also be set to an empty value (nothing) if you want to deploy CAS to an external application server of your choice.
 
 ```xml
 <app.server>-tomcat<app.server>
