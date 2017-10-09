@@ -23,6 +23,7 @@
 @if "%1" == "bootrun"  call:bootrun %2 %3 %4
 @if "%1" == "debug" call:debug %2 %3 %4
 @if "%1" == "run" call:run %2 %3 %4
+@if "%1" == "runalone" call:runalone %2 %3 %4
 @if "%1" == "help" call:help
 @if "%1" == "gencert" call:gencert
 @if "%1" == "command" call:command
@@ -65,6 +66,10 @@
 
 :run
     call:package %1 %2 %3 & java %JAVA_ARGS% -jar target/cas.war
+@goto:eof
+
+:runalone
+    call:package %1 %2 %3 & target/cas.war
 @goto:eof
 
 :gencert
