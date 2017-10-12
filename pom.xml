@@ -69,7 +69,7 @@
     </dependencies>
 
     <properties>
-        <cas.version>5.1.4</cas.version>
+        <cas.version>5.1.5</cas.version>
         <springboot.version>1.5.3.RELEASE</springboot.version>
         <!-- app.server could be -jetty, -undertow, -tomcat, or blank if you plan to provide appserver -->
         <app.server>-tomcat</app.server> 
