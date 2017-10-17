@@ -14,10 +14,12 @@ function help() {
 	echo "	copy: Copy config from ./etc/cas/config to /etc/cas/config"
 	echo "	clean: Clean Maven build directory"
 	echo "	package: Clean and build CAS war, also call copy"
-	echo "	run: Build and run CAS.war via spring boot (java -jar target/cas.war)"
+	echo "	run: Build and run cas.war via spring boot (java -jar target/cas.war)"
+	echo "	runalone: Build and run cas.war on its own (target/cas.war)"
 	echo "	debug: Run CAS.war and listen for Java debugger on port 5000"
 	echo "	bootrun: Run with maven spring boot plugin, doesn't work with multiple dependencies"
 	echo "	gencert: Create keystore with SSL certificate in location where CAS looks by default"
+        echo "	command: Run the CAS command line shell and pass commands"
 }
 
 function clean() {
@@ -41,6 +43,10 @@ function run() {
 	package && java -jar target/cas.war
 }
 
+function runalone() {
+	package && chmod +x target/cas.war && target/cas.war
+}
+
 function gencert() {
 	if [[ ! -d /etc/cas ]] ; then 
 		copy
@@ -56,6 +62,16 @@ function gencert() {
 	echo "Generating keystore for CAS with DN ${DNAME}"
 	keytool -genkeypair -alias cas -keyalg RSA -keypass changeit -storepass changeit -keystore /etc/cas/thekeystore -dname ${DNAME} -ext SAN=${CERT_SUBJ_ALT_NAMES}
 	keytool -exportcert -alias cas -storepass changeit -keystore /etc/cas/thekeystore -file /etc/cas/cas.cer
+}
+
+function command() {
+	CAS_VERSION=$(./mvnw -q -Dexec.executable="echo" -Dexec.args='${cas.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec 2>/dev/null)
+	COMMAND_FILE="./target/cas-server-support-shell-${CAS_VERSION}.jar"
+	if [ ! -f "$COMMAND_FILE" ]; then
+		package
+		wget -q http://repo1.maven.org/maven2/org/apereo/cas/cas-server-support-shell/${CAS_VERSION}/cas-server-support-shell-${CAS_VERSION}.jar -P ./target
+	fi
+	java -jar target/cas-server-support-shell-${CAS_VERSION}.jar "$@"
 }
 
 if [ $# -eq 0 ]; then
@@ -87,8 +103,15 @@ case "$1" in
 "run")
     run "$@"
     ;;
+"runalone")
+    runalone "$@"
+    ;;
 "gencert")
     gencert "$@"
+    ;;
+"command")
+    shift
+    command "$@"
     ;;
 *)
     help

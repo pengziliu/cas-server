@@ -23,8 +23,10 @@
 @if "%1" == "bootrun"  call:bootrun %2 %3 %4
 @if "%1" == "debug" call:debug %2 %3 %4
 @if "%1" == "run" call:run %2 %3 %4
+@if "%1" == "runalone" call:runalone %2 %3 %4
 @if "%1" == "help" call:help
 @if "%1" == "gencert" call:gencert
+@if "%1" == "command" call:command
 
 @rem function section starts here
 @goto:eof
@@ -38,7 +40,7 @@
 @goto:eof
 
 :help
-    @echo "Usage: build.bat [copy|clean|package|run|debug|bootrun|gencert] [optional extra args for maven]"
+    @echo "Usage: build.bat [copy|clean|package|run|debug|bootrun|gencert|command] [optional extra args for maven]"
     @echo "To get started on a clean system, run "build.bat copy" and "build.bat gencert", then "build.bat run"
     @echo "Note that using the copy or gencert arguments will create and/or overwrite the %CAS_DIR% which is outside this project"
 @goto:eof
@@ -66,6 +68,10 @@
     call:package %1 %2 %3 & java %JAVA_ARGS% -jar target/cas.war
 @goto:eof
 
+:runalone
+    call:package %1 %2 %3 & target/cas.war
+@goto:eof
+
 :gencert
     where /q keytool
     if ERRORLEVEL 1 (
@@ -79,4 +85,12 @@
         @echo Exporting cert for use in trust store (used by cas clients)
         keytool -exportcert -alias cas -storepass changeit -keystore %CAS_DIR%\thekeystore -file %CAS_DIR%\cas.cer
     )
+@goto:eof
+
+:command
+    for /f %%i in ('call %MAVEN_CMD% -q --non-recursive "-Dexec.executable=cmd" "-Dexec.args=/C echo ${cas.version}" "org.codehaus.mojo:exec-maven-plugin:1.3.1:exec"') do set CAS_VERSION=%%i
+    @set CAS_VERSION=%CAS_VERSION: =%
+    @set COMMAND_FILE=target\cas-server-support-shell-%CAS_VERSION%.jar
+     if not exist %COMMAND_FILE% powershell.exe -Command (new-object System.Net.WebClient).DownloadFile('http://repo1.maven.org/maven2/org/apereo/cas/cas-server-support-shell/%CAS_VERSION%/cas-server-support-shell-%CAS_VERSION%.jar','%COMMAND_FILE%')
+     call java %JAVA_ARGS% -jar %COMMAND_FILE% %1 %2 %3
 @goto:eof
