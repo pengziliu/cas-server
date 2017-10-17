@@ -96,5 +96,5 @@ Deploy resultant `target/cas.war`  to a servlet container of choice.
 Invokes the CAS Command Line Shell. For a list of commands either use no arguments or use `-h`. To enter the interactive shell use `-sh`.
 
 ```bash
-./build.sh command
+./build.sh cli
 ```

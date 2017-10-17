@@ -64,14 +64,31 @@ function gencert() {
 	keytool -exportcert -alias cas -storepass changeit -keystore /etc/cas/thekeystore -file /etc/cas/cas.cer
 }
 
-function command() {
+function cli() {
+	
 	CAS_VERSION=$(./mvnw -q -Dexec.executable="echo" -Dexec.args='${cas.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec 2>/dev/null)
-	COMMAND_FILE="./target/cas-server-support-shell-${CAS_VERSION}.jar"
-	if [ ! -f "$COMMAND_FILE" ]; then
-		package
-		wget -q http://repo1.maven.org/maven2/org/apereo/cas/cas-server-support-shell/${CAS_VERSION}/cas-server-support-shell-${CAS_VERSION}.jar -P ./target
+	# echo "CAS version: $CAS_VERSION"
+	JAR_FILE_NAME="cas-server-support-shell-${CAS_VERSION}.jar"
+	# echo "JAR name: $JAR_FILE_NAME"
+	JAR_PATH="org/apereo/cas/cas-server-support-shell/${CAS_VERSION}/${JAR_FILE_NAME}"
+	# echo "JAR path: $JAR_PATH"
+
+	JAR_FILE_LOCAL="$HOME/.m2/repository/$JAR_PATH";
+	# echo "Local JAR file path: $JAR_FILE_LOCAL";
+	if [ -f "$JAR_FILE_LOCAL" ]; then
+		# echo "Using JAR file locally at $JAR_FILE_LOCAL"
+		java -jar $JAR_FILE_LOCAL "$@"
+		exit 0;
 	fi
-	java -jar target/cas-server-support-shell-${CAS_VERSION}.jar "$@"
+
+	COMMAND_FILE="./target/${JAR_FILE_NAME}"
+	if [ ! -f "$COMMAND_FILE" ]; then
+		mkdir -p ./target
+		wget "https://repo1.maven.org/maven2/${JAR_PATH}" -P ./target
+		java -jar $COMMAND_FILE "$@"
+		exit 0;
+	fi
+
 }
 
 if [ $# -eq 0 ]; then
@@ -109,12 +126,11 @@ case "$1" in
 "gencert")
     gencert "$@"
     ;;
-"command")
+"cli")
     shift
-    command "$@"
+    cli "$@"
     ;;
 *)
     help
     ;;
 esac
-
