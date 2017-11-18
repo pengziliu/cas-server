@@ -19,7 +19,7 @@ function help() {
 	echo "	debug: Run CAS.war and listen for Java debugger on port 5000"
 	echo "	bootrun: Run with maven spring boot plugin, doesn't work with multiple dependencies"
 	echo "	gencert: Create keystore with SSL certificate in location where CAS looks by default"
-        echo "	command: Run the CAS command line shell and pass commands"
+	echo "	cli: Run the CAS command line shell and pass commands"
 }
 
 function clean() {
@@ -53,8 +53,8 @@ function gencert() {
 	fi
 	which keytool
 	if [[ $? -ne 0 ]] ; then
-	    echo Error: Java JDK \'keytool\' is not installed or is not in the path
-	    exit 1
+		echo Error: Java JDK \'keytool\' is not installed or is not in the path
+		exit 1
 	fi
 	# override DNAME and CERT_SUBJ_ALT_NAMES before calling or use dummy values
 	DNAME="${DNAME:-CN=cas.example.org,OU=Example,OU=Org,C=US}"
@@ -81,13 +81,15 @@ function cli() {
 		exit 0;
 	fi
 
-	COMMAND_FILE="./target/${JAR_FILE_NAME}"
+	DOWNLOAD_DIR=./target
+	COMMAND_FILE="${DOWNLOAD_DIR}/${JAR_FILE_NAME}"
 	if [ ! -f "$COMMAND_FILE" ]; then
-		mkdir -p ./target
-		wget "https://repo1.maven.org/maven2/${JAR_PATH}" -P ./target
-		java -jar $COMMAND_FILE "$@"
-		exit 0;
+		mkdir -p $DOWNLOAD_DIR
+		./mvnw org.apache.maven.plugins:maven-dependency-plugin:3.0.2:get -DgroupId=org.apereo.cas -DartifactId=cas-server-support-shell -Dversion=$CAS_VERSION -Dpackaging=jar -DartifactItem.outputDirectory=$DOWNLOAD_DIR -DremoteRepositories=central::default::http://repo1.maven.apache.org/maven2,snapshots::::https://oss.sonatype.org/content/repositories/snapshots -Dtransitive=false
+		./mvnw org.apache.maven.plugins:maven-dependency-plugin:3.0.2:copy -Dmdep.useBaseVersion=true -Dartifact=org.apereo.cas:cas-server-support-shell:$CAS_VERSION:jar -DoutputDirectory=$DOWNLOAD_DIR
 	fi
+	java -jar $COMMAND_FILE "$@"
+	exit 0;
 
 }
 
