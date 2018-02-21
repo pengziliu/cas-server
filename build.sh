@@ -13,26 +13,29 @@ function help() {
 	echo "Usage: build.sh [copy|clean|package|run|debug|bootrun|gencert]"
 	echo "	copy: Copy config from ./etc/cas/config to /etc/cas/config"
 	echo "	clean: Clean Maven build directory"
-	echo "	package: Clean and build CAS war, also call copy"
-	echo "	run: Build and run cas.war via spring boot (java -jar target/cas.war)"
-	echo "	runalone: Build and run cas.war on its own (target/cas.war)"
+	echo "	package: Clean and build CAS war"
+	echo "	run: Build and run cas.war via Java (i.e. java -jar target/cas.war)"
+	echo "	runalone: Build and run cas.war on its own as a standalone executable (target/cas.war)"
 	echo "	debug: Run CAS.war and listen for Java debugger on port 5000"
-	echo "	bootrun: Run with maven spring boot plugin, doesn't work with multiple dependencies"
+	echo "	bootrun: Run with maven spring boot plugin"
 	echo "	gencert: Create keystore with SSL certificate in location where CAS looks by default"
 	echo "	cli: Run the CAS command line shell and pass commands"
 }
 
 function clean() {
+    shift
 	./mvnw clean "$@"
 }
 
 function package() {
+    shift
 	./mvnw clean package -T 5 "$@"
-	copy
+	# copy
 }
 
 function bootrun() {
-	./mvnw clean package spring-boot:run -T 5 "$@"
+    shift
+	./mvnw clean package spring-boot:run -P bootiful -T 5 "$@"
 }
 
 function debug() {
@@ -44,7 +47,10 @@ function run() {
 }
 
 function runalone() {
-	package && chmod +x target/cas.war && target/cas.war
+	shift
+   ./mvnw clean package -P default,exec  "$@"
+    chmod +x target/cas.war
+   target/cas.war
 }
 
 function gencert() {
@@ -98,7 +104,6 @@ if [ $# -eq 0 ]; then
     run
     exit 0
 fi
-
 
 case "$1" in
 "copy")
