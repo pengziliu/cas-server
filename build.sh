@@ -18,6 +18,7 @@ function help() {
 	echo "	runalone: Build and run cas.war on its own as a standalone executable (target/cas.war)"
 	echo "	debug: Run CAS.war and listen for Java debugger on port 5000"
 	echo "	bootrun: Run with maven spring boot plugin"
+	echo "	listviews: List all CAS views that ship with the web application and can be customized in the overlay"
 	echo "	gencert: Create keystore with SSL certificate in location where CAS looks by default"
 	echo "	cli: Run the CAS command line shell and pass commands"
 }
@@ -53,8 +54,16 @@ function runalone() {
    target/cas.war
 }
 
+function listviews() {
+	shift
+	if [ ! -d $PWD/target/cas ];then
+	 ./mvnw clean package war:exploded "$@"
+	fi
+	find $PWD/target/cas -type f -name "*.html" | xargs -n 1 basename | sort | more
+}
+
 function gencert() {
-	if [[ ! -d /etc/cas ]] ; then 
+	if [[ ! -d /etc/cas ]] ; then
 		copy
 	fi
 	which keytool
@@ -71,7 +80,7 @@ function gencert() {
 }
 
 function cli() {
-	
+
 	CAS_VERSION=$(./mvnw -q -Dexec.executable="echo" -Dexec.args='${cas.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec 2>/dev/null)
 	# echo "CAS version: $CAS_VERSION"
 	JAR_FILE_NAME="cas-server-support-shell-${CAS_VERSION}.jar"
@@ -107,12 +116,12 @@ fi
 
 case "$1" in
 "copy")
-    copy 
+    copy
     ;;
 "clean")
 	shift
     clean "$@"
-    ;;   
+    ;;
 "package")
 	shift
     package "$@"
@@ -129,6 +138,9 @@ case "$1" in
     ;;
 "runalone")
     runalone "$@"
+    ;;
+"listviews")
+    listviews "$@"
     ;;
 "gencert")
     gencert "$@"
