@@ -19,6 +19,7 @@ function help() {
 	echo "	debug: Run CAS.war and listen for Java debugger on port 5000"
 	echo "	bootrun: Run with maven spring boot plugin"
 	echo "	listviews: List all CAS views that ship with the web application and can be customized in the overlay"
+	echo "	getview: Ask for a view name to be included in the overlay for customizations"
 	echo "	gencert: Create keystore with SSL certificate in location where CAS looks by default"
 	echo "	cli: Run the CAS command line shell and pass commands"
 }
@@ -56,11 +57,41 @@ function runalone() {
 
 function listviews() {
 	shift
-	if [ ! -d $PWD/target/cas ];then
-	 ./mvnw clean package war:exploded "$@"
-	fi
+	explodeapp
 	find $PWD/target/cas -type f -name "*.html" | xargs -n 1 basename | sort | more
 }
+
+function explodeapp() {
+	if [ ! -d $PWD/target/cas ];then
+		echo "Building the CAS web application and exploding the final war file..."
+		./mvnw clean package war:exploded "$@"
+	fi
+	echo "Exploded the CAS web application file."
+}
+
+function getview() {
+	shift
+	explodeapp
+	echo "Searching for view name $@..."
+	results=`find $PWD/target/cas -type f -name "*.html" | grep -i "$@"`
+	echo -e "Found view(s): \n$results"
+	count=`wc -w <<< "$results"`
+	if [ "$count" -eq 1 ];then
+		# echo "Found view $results to include in the overlay"
+		firststring="target/cas/WEB-INF/classes"
+		secondstring="src/main/resources"
+		overlayfile=`echo "${results/$firststring/$secondstring}"`
+		overlaypath=`dirname "${overlayfile}"`
+		# echo "Overlay file is $overlayfile to be created at $overlaypath"
+		mkdir -p $overlaypath
+		cp $results $overlaypath
+		echo "Created view at $overlayfile"
+		ls $overlayfile
+	else
+		echo "More than one view file is found. Narrow down the search query..."
+	fi
+}
+
 
 function gencert() {
 	if [[ ! -d /etc/cas ]] ; then
@@ -144,6 +175,9 @@ case "$1" in
     ;;
 "gencert")
     gencert "$@"
+    ;;
+"getview")
+    getview "$@"
     ;;
 "cli")
     shift
